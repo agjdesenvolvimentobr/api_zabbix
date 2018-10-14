@@ -9,7 +9,7 @@ from json import loads
 
 class alertTelegram:
       def __init__(self, send_user, msg, item_id):
-            token = "681206017:AAFVw6H0d9Aitr6V2wlMGYqdU6tK3CwZTkA"
+            token = "<TOKEN>"
             self.url_ZABBIX = "http://10.10.10.101/zabbix/"
             self.send_msg(send_user , msg,token)
             photo=self.get_grafico(item_id)
