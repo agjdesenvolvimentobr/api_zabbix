@@ -10,8 +10,12 @@ import telegram
 
 class alertTelegram:
       def __init__(self, send_user, msg, item_id):
+<<<<<<< HEAD
             token = "681206017:AAFVw6H0d9Aitr6V2wlMGYqdU6tK3CwZTkA"
             self.bot = telegram.Bot(token=token)
+=======
+            token = "<TOKEN>"
+>>>>>>> 0f565bf5feb847ab848d686143d829c88811dbb2
             self.url_ZABBIX = "http://10.10.10.101/zabbix/"
             self.send_msg(send_user , msg,token)
             photo=self.get_grafico(item_id)
