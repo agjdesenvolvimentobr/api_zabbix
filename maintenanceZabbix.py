@@ -5,8 +5,8 @@ import datetime
 import sys
 
 class maintenanceZabbix:
-      def __init__(self, user, password,host_name):
-            self.url = "http://10.10.10.101/zabbix/api_jsonrpc.php"
+      def __init__(self, user, password,host_name, time):
+            self.url = "http://localhost/api_jsonrpc.php"
             self.headers= {"Content-Type": "application/json"}
             self.id = 0
             self.request_object = {"jsonrpc": "2.0","method": "apiinfo.version", "params": {},"auth": None, "id": self.id}
@@ -15,6 +15,7 @@ class maintenanceZabbix:
             self.password = password
             self.request_object["auth"] = self.conection("user.login")
             self.host_name = host_name
+            self.time=time
             self.host = self.get_host()
             self.host_id=self.host[0].get("hostid")
             self.manute_id = int(self.host[0].get("maintenanceid"))
@@ -36,7 +37,7 @@ class maintenanceZabbix:
       #Metodo que inicia a manutenção
       def start_maintenance(self):
             active_since=int(datetime.datetime.now().timestamp())
-            time=1200
+            time=self.time*60
             active_till = active_since+time
             timeperiods=[{"start_date":active_since, "period": time, "timeperiod_type":0}]
             manute_params = {"active_since":active_since,"active_till":active_till,"timeperiods":timeperiods}
@@ -67,6 +68,12 @@ class maintenanceZabbix:
                   exit()
 #Iniciando
 if __name__ == '__main__':
-      host_name = sys.argv[1]
-      manute=maintenanceZabbix("Manute", "zabbix",host_name)
+      user= sys.argv[1]
+      password=sys.argv[2]
+      host_name = sys.argv[3]
+      if len(sys.argv) >4: 
+            time=int(sys.argv[4])
+      else:
+            time=15
+      manute=maintenanceZabbix(user, password, host_name, time)
       manute.start_maintenance()
