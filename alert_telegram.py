@@ -6,10 +6,12 @@ from PIL import Image
 from io import BytesIO
 import json
 from json import loads
+import telegram
 
 class alertTelegram:
       def __init__(self, send_user, msg, item_id):
             token = "681206017:AAFVw6H0d9Aitr6V2wlMGYqdU6tK3CwZTkA"
+            self.bot = telegram.Bot(token=token)
             self.url_ZABBIX = "http://10.10.10.101/zabbix/"
             self.send_msg(send_user , msg,token)
             photo=self.get_grafico(item_id)
@@ -26,13 +28,13 @@ class alertTelegram:
             payload = {"chat_id": send_user, "text": msg,"parse_mode":"HTML"}
             r = requests.get('https://api.telegram.org/bot'+token+"/sendMessage", params=payload)
             print(r.text)
+            #self.bot.mesa
       def send_img(self, send_user,photo, token):
             '''bio = BytesIO()
             bio.name = 'alerta.jpeg'
             image.save(bio, 'JPEG')
             bio.seek(0)'''
-            f = open("alerta.jpg", "rb")
-            payload = {"chat_id": send_user, "photo": f,"parse_mode":"HTML"}
+            payload = {"chat_id": send_user, "parse_mode":"HTML","photo": open("alerta.jpeg", 'rb')}
             r = requests.get('https://api.telegram.org/bot'+token+"/sendPhoto", params=payload)
             print(r.text)
 #Iniciando

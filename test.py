@@ -1,4 +1,4 @@
-import requests
+"""import requests
 from json import loads
 import json
 url = 'http://10.10.10.101/zabbix/api_jsonrpc.php'
@@ -15,4 +15,11 @@ json = json.dumps(request_object)
 response = requests.post(url, headers=headers , data=json ) 
 response_json = json.loads(response.text)
 y = loads(response.json())
-print(y.get("result"))
+print(y.get("result"))"""
+from zabbix.api import ZabbixAPI
+
+# Create ZabbixAPI class instance
+zapi = ZabbixAPI(url='http://localhost', user='api', password='zabbix')
+print(zapi.do_request('apiinfo.version'))
+print(zapi.do_request('user.logout'))
+
