@@ -4,7 +4,7 @@ import requests
 
 class UserZabbix:
       def __init__(self):
-            self.url = "http://10.10.10.10/zabbix/api_jsonrpc.php"
+            self.url = "http://zabbixhomolog.poupex.com.br/api_jsonrpc.php"
             self.headers= {"Content-Type": "application/json"}
             self.request_object = {"jsonrpc": "2.0","method": " ", "params": {},"auth": None, "id": 1}
             self.request = None

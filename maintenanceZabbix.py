@@ -6,7 +6,7 @@ import sys
 
 class maintenanceZabbix:
       def __init__(self, user, password,host_name,manute_name):
-            self.url = "http://10.10.10.101/zabbix/api_jsonrpc.php"
+            self.url = "http://zabbixhomolog.poupex.com.br/api_jsonrpc.php"
             self.headers= {"Content-Type": "application/json"}
             self.id = 0
             self.request_object = {"jsonrpc": "2.0","method": "apiinfo.version", "params": {},"auth": None, "id": self.id}
@@ -76,8 +76,8 @@ class maintenanceZabbix:
                   exit()
 #Iniciando
 if __name__ == '__main__':
-      host_name = sys.argv[1]
-      manute_name=sys.argv[2]
-      manute=maintenanceZabbix("Admin", "zabbix",host_name, manute_name)
+      host_name = sys.argv[1]#nome do host
+      manute_name=sys.argv[2]#Titulo da manutenção
+      manute=maintenanceZabbix("Admin", "M0n1t0r1@",host_name, manute_name)
       manute.start_maintenance()
      # print(m.get_host("Zabbix server"))
