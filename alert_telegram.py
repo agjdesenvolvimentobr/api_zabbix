@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import requests
+import sys
+from PIL import Image
+from io import BytesIO
+import json
+from json import loads
+import telegram
+
+class alertTelegram:
+      def __init__(self, send_user, msg, item_id):
+<<<<<<< HEAD
+            token = "681206017:AAFVw6H0d9Aitr6V2wlMGYqdU6tK3CwZTkA"
+            self.bot = telegram.Bot(token=token)
+=======
+            token = "<TOKEN>"
+>>>>>>> 0f565bf5feb847ab848d686143d829c88811dbb2
+            self.url_ZABBIX = "http://10.10.10.101/zabbix/"
+            self.send_msg(send_user , msg,token)
+            photo=self.get_grafico(item_id)
+            self.send_img(send_user, photo ,token)
+      #Metodo que busca o ID do host que deve ser usado durante a manutenção
+      def get_grafico(self,item_id):
+            cookies = requests.post(self.url_ZABBIX, data={"name":"Manute","password":"zabbix","autologin":1,"enter":"Sign in"}).cookies
+            grafico =requests.get(self.url_ZABBIX+"chart.php?period=1800&itemids="+item_id,cookies=cookies).content
+            with open('alerta.jpeg', 'wb') as file:
+                 file.write(grafico)
+                 file.close()
+            return 'alerta.jpg'
+      def send_msg(self, send_user,msg, token):
+            payload = {"chat_id": send_user, "text": msg,"parse_mode":"HTML"}
+            r = requests.get('https://api.telegram.org/bot'+token+"/sendMessage", params=payload)
+            print(r.text)
+            #self.bot.mesa
+      def send_img(self, send_user,photo, token):
+            '''bio = BytesIO()
+            bio.name = 'alerta.jpeg'
+            image.save(bio, 'JPEG')
+            bio.seek(0)'''
+            payload = {"chat_id": send_user, "parse_mode":"HTML","photo": open("alerta.jpeg", 'rb')}
+            r = requests.get('https://api.telegram.org/bot'+token+"/sendPhoto", params=payload)
+            print(r.text)
+#Iniciando
+if __name__ == '__main__':
+      send_user = str(sys.argv[1])
+      msg = str(sys.argv[2])
+      item_id = str(sys.argv[3])
+      manute=alertTelegram(send_user,msg,item_id)

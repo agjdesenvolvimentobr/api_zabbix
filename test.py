@@ -1,4 +1,4 @@
-import requests
+'''import requests
 from json import loads
 import json
 url = 'http://zabbixhomolog.poupex.com.br/api_jsonrpc.php'
@@ -15,4 +15,4 @@ json = json.dumps(request_object)
 response = requests.post(url, headers=headers , data=json ) 
 #response_json = json.loads(response.text)
 #y = loads(response.json())
-print(response.text)
+print(response.text'''

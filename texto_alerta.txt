@@ -1,0 +1,6 @@
+<b>Problema detectado!</b>
+<pre>HOST: {HOST.NAME}
+PROBLEMA: {TRIGGER.NAME}
+SEVERIDADE: <code>{TRIGGER.SEVERITY}</code>
+
+Problema iniciado às {EVENT.TIME} em {EVENT.DATE}</pre>
