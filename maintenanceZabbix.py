@@ -14,7 +14,7 @@ class maintenanceZabbix:
             self.time = time
             self.request_object["auth"] = self.conection("user.login", user, password)
             self.manute_name = manute_name
-            self.get_maintenance(manute_name)
+            self.delete_maintenance(manute_name)
             self.hosts_id = self.get_host(hosts_name)
       #Metodo que fazar conexão do usuario
       def conection(self, method, user, password):
@@ -23,18 +23,15 @@ class maintenanceZabbix:
                   data = self.zabbix_api(method, {"user": user,"password":password})
             else:
                   data = self.zabbix_api(method)
-            if(data.get("error")):
-                  print(data.get("error"))
-                  exit(1)
             return data.get("result")
       #Metodo que Obtem manutenção, se existir.
-      def get_maintenance(self,manute_name):
+      def delete_maintenance(self,manute_name):
             maintenanceid = 0
             data = self.zabbix_api("maintenance.get", {"output":"maintenanceid","filter":{"name":manute_name}})
             manutes = data.get("result")
             for manute in manutes:
                   maintenanceid = manute.get("maintenanceid")
-            self.zabbix_api("maintenance.delete",[maintenanceid])
+                  self.zabbix_api("maintenance.delete",[maintenanceid])
             
       #Metodo que busca o ID do host que deve ser usado durante a manutenção
       def get_host(self, hosts_name):
@@ -44,6 +41,9 @@ class maintenanceZabbix:
             hosts_id = []
             for host in hosts:
                   hosts_id.append(host.get("hostid"))
+            if(len(hosts_id) == 0):
+                  print("Hosts informados não foram localizados!")
+                  exit(2)
             return hosts_id
       #Metodo que inicia a manutenção
       def start_maintenance(self):
@@ -67,7 +67,10 @@ class maintenanceZabbix:
                   data = loads(self.request.text)
                   self.request_object["params"] = {}
                   self.request_object["method"] = "apiinfo.version"
-                  self.request_object["id"] = self.id 
+                  self.request_object["id"] = self.id
+                  if(data.get("error")):
+                        print(data.get("error"))
+                        exit(1) 
                   return data
             except BaseException:
                   print("Falha na conexão!")
@@ -79,7 +82,7 @@ if __name__ == '__main__':
       hosts_name = sys.argv[3].split(',')#nome do host
       manute_name=sys.argv[4]#Titulo da manutenção
       time=15
-      if(sys.argv.count == 6):
+      if(len(sys.argv) == 6):
             time=int(sys.argv[5])
       manute=maintenanceZabbix(user,password,hosts_name, manute_name,time)
       manute.start_maintenance()
